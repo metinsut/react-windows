@@ -1,8 +1,8 @@
-import { ReactNode, RefObject } from 'react';
+import { ReactElement, RefObject } from 'react';
 
 export type WindowType = {
   parentRef?: RefObject<Element>;
-  content: ReactNode;
+  content: ReactElement;
   id: string;
   name: string;
   windowStates?: WindowStates;

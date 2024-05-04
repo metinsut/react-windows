@@ -1,8 +1,16 @@
-import { useRef, useState, PointerEvent, RefObject, forwardRef } from 'react';
+import {
+  useRef,
+  useState,
+  PointerEvent,
+  RefObject,
+  forwardRef,
+  Suspense,
+} from 'react';
 import { motion, useDragControls, useMotionValue } from 'framer-motion';
 import { useResizeObserver } from 'usehooks-ts';
 import { cn } from '../../utils/cn';
 import { initialZIndex, useWindowStore } from './state';
+import { Loader } from '@/components/ui/loader';
 
 type Size = {
   width?: number;
@@ -12,7 +20,7 @@ type Size = {
 type Props = { id: string; parentRef: RefObject<Element> };
 type Ref = RefObject<Element>;
 
-export const WindowsProvider = forwardRef<Ref, Props>((props, ref) => {
+export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
   const { parentRef, id } = props;
   const getWindow = useWindowStore((state) => state.getWindow);
   const setZIndex = useWindowStore((state) => state.setZIndex);
@@ -63,7 +71,7 @@ export const WindowsProvider = forwardRef<Ref, Props>((props, ref) => {
       drag
       dragControls={controls}
       className={cn(
-        'bg-cyan-500 border-2 border-gray-500 border-solid resize overflow-auto fixed shadow-lg'
+        'flex flex-col bg-cyan-500 border-2 border-gray-500 border-solid resize overflow-auto fixed shadow-lg'
       )}
       style={{
         height: mHeight,
@@ -75,18 +83,20 @@ export const WindowsProvider = forwardRef<Ref, Props>((props, ref) => {
       dragConstraints={parentRef! ?? ref}
       onPointerDown={handleWrapperDown}
     >
-      <motion.div
-        className={cn('bg-purple-600 touch-none', {
-          'cursor-grab': !isGrabbing,
-          'cursor-grabbing': isGrabbing,
-        })}
-        onPointerDown={(e) => startDrag(e)}
-        onMouseDown={() => setIsGrabbing(true)}
-        onMouseUp={() => setIsGrabbing(false)}
-      >
-        {windowState.name}
-      </motion.div>
-      <>{windowState.content}</>
+      <Suspense fallback={<Loader />}>
+        <motion.div
+          className={cn('bg-purple-600 touch-none', {
+            'cursor-grab': !isGrabbing,
+            'cursor-grabbing': isGrabbing,
+          })}
+          onPointerDown={(e) => startDrag(e)}
+          onMouseDown={() => setIsGrabbing(true)}
+          onMouseUp={() => setIsGrabbing(false)}
+        >
+          {windowState.name}
+        </motion.div>
+        <div className="flex flex-1">{windowState.content}</div>
+      </Suspense>
     </motion.div>
   );
 });
