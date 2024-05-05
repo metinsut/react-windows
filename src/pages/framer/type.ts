@@ -3,7 +3,7 @@ import { ReactElement, RefObject } from 'react';
 export type WindowType = {
   parentRef?: RefObject<Element>;
   content: ReactElement;
-  id: string;
+  id: number;
   name: string;
   windowStates?: WindowStates;
   componentStates?: ComponentStates;

@@ -11,13 +11,14 @@ import { useResizeObserver } from 'usehooks-ts';
 import { cn } from '../../utils/cn';
 import { initialZIndex, useWindowStore } from './state';
 import { Loader } from '@/components/ui/loader';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 type Size = {
   width?: number;
   height?: number;
 };
 
-type Props = { id: string; parentRef: RefObject<Element> };
+type Props = { id: number; parentRef: RefObject<Element> };
 type Ref = RefObject<Element>;
 
 export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
@@ -25,7 +26,7 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
   const getWindow = useWindowStore((state) => state.getWindow);
   const setZIndex = useWindowStore((state) => state.setZIndex);
   const zIndex = useWindowStore((state) => state.zIndex);
-  const windowState = getWindow(id);
+  const window = getWindow(id);
 
   const draggableRef = useRef<HTMLDivElement>(null);
 
@@ -93,9 +94,12 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
           onMouseDown={() => setIsGrabbing(true)}
           onMouseUp={() => setIsGrabbing(false)}
         >
-          {windowState.name}
+          {/* {windowState.name} */}
+          header
         </motion.div>
-        <div className="flex flex-1">{windowState.content}</div>
+        <div className="flex flex-1 overflow-auto">
+          <ScrollArea>{window?.content ?? 'content'}</ScrollArea>
+        </div>
       </Suspense>
     </motion.div>
   );

@@ -1,6 +1,11 @@
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-export function Test3() {
+type Props = {
+  displayName?: string;
+};
+
+function Test3(props: Props) {
+  console.log('props', props);
   return (
     <div>
       <ScrollArea>
@@ -44,3 +49,11 @@ export function Test3() {
     </div>
   );
 }
+
+Test3.displayName = 'Test3';
+Test3.windowProps = {
+  width: 320,
+  height: 600,
+};
+
+export default Test3;

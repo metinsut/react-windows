@@ -1,9 +1,9 @@
 import { lazy, useRef } from 'react';
 import { useWindowStore } from './state';
 import { WindowProvider } from './window-provider';
-import { Test2 } from '@/features/test-2';
 
 const Test1 = lazy(() => import('@/features/test-1'));
+const Test3 = lazy(() => import('@/features/test-3'));
 
 export function FramerDrag() {
   const constraintsRef = useRef(null);
@@ -14,11 +14,11 @@ export function FramerDrag() {
 
   const handleAddWindow = () => {
     setWindow({
-      three: { id: 'three', name: 'three', content: <Test1 /> },
+      105: { id: 105, name: 'three', content: <Test1 /> },
     });
   };
   const handleAddWindow2 = () => {
-    openWindow(<Test2 />);
+    openWindow(<Test3 displayName="Test3" />);
   };
 
   return (
