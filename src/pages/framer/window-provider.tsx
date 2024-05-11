@@ -8,10 +8,11 @@ import {
 } from 'react';
 import { motion, useDragControls, useMotionValue } from 'framer-motion';
 import { useResizeObserver } from 'usehooks-ts';
-import { cn } from '../../utils/cn';
+import { cn } from '../../lib/cn';
 import { initialZIndex, useWindowStore } from './state';
 import { Loader } from '@/components/ui/loader';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { X } from 'lucide-react';
 
 type Size = {
   width?: number;
@@ -25,6 +26,7 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
   const { parentRef, id } = props;
   const getWindow = useWindowStore((state) => state.getWindow);
   const setZIndex = useWindowStore((state) => state.setZIndex);
+  const closeWindows = useWindowStore((state) => state.closeWindow);
   const zIndex = useWindowStore((state) => state.zIndex);
   const window = getWindow(id);
 
@@ -78,6 +80,8 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
         height: mHeight,
         width: mWidth,
         zIndex: 10,
+        left: window.windowStates?.left,
+        top: window.windowStates?.top,
       }}
       dragMomentum={false}
       dragListener={false}
@@ -86,16 +90,23 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
     >
       <Suspense fallback={<Loader />}>
         <motion.div
-          className={cn('bg-purple-600 touch-none', {
-            'cursor-grab': !isGrabbing,
-            'cursor-grabbing': isGrabbing,
-          })}
-          onPointerDown={(e) => startDrag(e)}
-          onMouseDown={() => setIsGrabbing(true)}
-          onMouseUp={() => setIsGrabbing(false)}
+          className={cn('bg-purple-600 flex items-center justify-between')}
         >
-          {/* {windowState.name} */}
-          header
+          <motion.div
+            className={cn('flex-1 touch-none ', {
+              'cursor-grab': !isGrabbing,
+              'cursor-grabbing': isGrabbing,
+            })}
+            onPointerDown={(e) => startDrag(e)}
+            onMouseDown={() => setIsGrabbing(true)}
+            onMouseUp={() => setIsGrabbing(false)}
+          >
+            {window.name}
+          </motion.div>
+          <X
+            className="cursor-pointer h-4 w-4"
+            onClick={() => closeWindows(window.id)}
+          />
         </motion.div>
         <div className="flex flex-1 overflow-auto">
           <ScrollArea>{window?.content ?? 'content'}</ScrollArea>

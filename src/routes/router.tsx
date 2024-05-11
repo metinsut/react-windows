@@ -1,8 +1,8 @@
 import { Outlet, createRootRoute, createRouter } from '@tanstack/react-router';
-import { Header } from '../header';
-import { indexRoute } from '../../pages/home';
-import { nativeRoute } from '../../pages/native';
-import { framerRoute } from '../../pages/framer';
+import { Header } from '../core/header';
+import { indexRoute } from '../pages/home';
+import { nativeRoute } from '../pages/native';
+import { framerRoute } from '../pages/framer';
 
 declare module '@tanstack/react-router' {
   interface Register {

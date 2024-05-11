@@ -1,5 +1,5 @@
 import { createRoute } from '@tanstack/react-router';
-import { rootRoute } from '../../core/routes/router';
+import { rootRoute } from '../../routes/router';
 import { FramerDrag } from './framer-drag';
 
 export const framerRoute = createRoute({

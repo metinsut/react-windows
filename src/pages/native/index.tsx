@@ -1,5 +1,5 @@
 import { createRoute } from '@tanstack/react-router';
-import { rootRoute } from '../../core/routes/router';
+import { rootRoute } from '../../routes/router';
 import { NativeDragWindow } from './native-drag';
 
 export const nativeRoute = createRoute({

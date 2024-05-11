@@ -1,6 +1,7 @@
 import { lazy, useRef } from 'react';
 import { useWindowStore } from './state';
 import { WindowProvider } from './window-provider';
+import { WindowList } from './window-list';
 
 const Test1 = lazy(() => import('@/features/test-1'));
 const Test3 = lazy(() => import('@/features/test-3'));
@@ -21,6 +22,8 @@ export function FramerDrag() {
     openWindow(<Test3 displayName="Test3" />);
   };
 
+  console.log('windows', windows);
+
   return (
     <section ref={constraintsRef} className="w-full h-full bg-orange-200">
       <button className="border-2 border-gray-700" onClick={handleAddWindow}>
@@ -37,6 +40,7 @@ export function FramerDrag() {
           id={windows[windowKey].id}
         />
       ))}
+      <WindowList />
     </section>
   );
 }

@@ -10,13 +10,13 @@ const windowsMock: WindowsMock = {
     id: 100,
     name: 'one',
     content: <div>QQQ</div>,
-    windowStates: { zIndex: 10 },
+    windowStates: { zIndex: 10, top: 200, left: 200 },
   },
   101: {
     id: 101,
     name: 'two',
     content: <div>RRR</div>,
-    windowStates: { zIndex: 10 },
+    windowStates: { zIndex: 10, top: 300, left: 300 },
   },
 };
 
@@ -27,6 +27,7 @@ type WindowStore = {
   setWindow: (window: WindowsMock) => void;
   setZIndex: (zIndex: number) => void;
   openWindow: (component: ReactElement) => void;
+  closeWindow: (id: number) => void;
 };
 
 export const useWindowStore = create<WindowStore>((set, b) => ({
@@ -40,9 +41,15 @@ export const useWindowStore = create<WindowStore>((set, b) => ({
     const id = Math.floor(Math.random() * 1000);
     const newWindow = {
       id,
-      name: 'component',
+      name: component.props.displayName,
       content: component,
     };
     return set((state) => ({ windows: { ...state.windows, [id]: newWindow } }));
   },
+  closeWindow: (id) =>
+    set((state) => {
+      const updatedWindows = { ...state.windows };
+      delete updatedWindows[id];
+      return { windows: updatedWindows };
+    }),
 }));
