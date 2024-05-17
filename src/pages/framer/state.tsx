@@ -1,6 +1,15 @@
 import { create } from 'zustand';
 import { WindowType } from './type';
-import { ReactElement } from 'react';
+import { LazyExoticComponent, ReactElement } from 'react';
+
+type LazyELement = LazyExoticComponent<{
+  (): JSX.Element;
+  defaultProps: {
+    width: number;
+    height: number;
+    componentName: string;
+  };
+}>;
 
 type WindowsMock = { [key in string]: WindowType };
 
@@ -37,11 +46,11 @@ export const useWindowStore = create<WindowStore>((set, b) => ({
   setWindow: (window) =>
     set((state) => ({ windows: { ...state.windows, ...window } })),
   setZIndex: (zIndex) => set(() => ({ zIndex })),
-  openWindow: (component) => {
+  openWindow: async (component: ReactElement) => {
     const id = Math.floor(Math.random() * 1000);
     const newWindow = {
       id,
-      name: component.props.displayName,
+      name: component.props.componentName,
       content: component,
     };
     return set((state) => ({ windows: { ...state.windows, [id]: newWindow } }));

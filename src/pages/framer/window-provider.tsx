@@ -12,7 +12,7 @@ import { cn } from '../../lib/cn';
 import { initialZIndex, useWindowStore } from './state';
 import { Loader } from '@/components/ui/loader';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { X } from 'lucide-react';
+import { X, Maximize } from 'lucide-react';
 
 type Size = {
   width?: number;
@@ -68,6 +68,8 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
     }
   };
 
+  const handleFullScreen = () => {};
+
   return (
     <motion.div
       ref={draggableRef}
@@ -90,10 +92,12 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
     >
       <Suspense fallback={<Loader />}>
         <motion.div
-          className={cn('bg-purple-600 flex items-center justify-between')}
+          className={cn(
+            'h-6 px-1 bg-purple-600 flex items-center justify-between'
+          )}
         >
           <motion.div
-            className={cn('flex-1 touch-none ', {
+            className={cn('h-full flex-1 touch-none truncate', {
               'cursor-grab': !isGrabbing,
               'cursor-grabbing': isGrabbing,
             })}
@@ -103,8 +107,12 @@ export const WindowProvider = forwardRef<Ref, Props>((props, ref) => {
           >
             {window.name}
           </motion.div>
+          <Maximize
+            className="cursor-pointer h-4 w-4 text-gray-200 hover:text-gray-300"
+            onClick={handleFullScreen}
+          />
           <X
-            className="cursor-pointer h-4 w-4"
+            className="cursor-pointer h-4 w-4 text-gray-200 hover:text-gray-300"
             onClick={() => closeWindows(window.id)}
           />
         </motion.div>
